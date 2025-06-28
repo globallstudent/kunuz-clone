@@ -4,10 +4,11 @@ from accounts.models import User
 
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
-    list_display = ("email", "first_name", "last_name", "is_active", "is_staff", "is_superuser", "is_confirmed")
-    search_fields = ("email", "first_name", "last_name")
+    list_display = ("email", "first_name", "last_name", "is_active", "is_staff", "is_superuser", "is_confirmed", "last_login", "created_at")
+    search_fields = ("email", "first_name", "last_name", "bio")
     list_filter = ("is_active", "is_staff", "is_superuser", "is_confirmed")
-    ordering = ("email",)
+    ordering = ("-created_at",)
+    readonly_fields = ("last_login", "created_at", "updated_at")
     fieldsets = (
         (None, {"fields": ("email", "password")}),
         ("Personal info", {"fields": ("first_name", "last_name", "avatar", "bio")}),

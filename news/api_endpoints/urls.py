@@ -1,11 +1,26 @@
-from rest_framework.routers import DefaultRouter
-from .views import NewsViewSet, CategoryViewSet, TagViewSet, CommentViewSet, MediaFileViewSet
+from django.urls import path
+from .views import (
+    NewsListCreateAPIView, NewsRetrieveUpdateDestroyAPIView,
+    CategoryListCreateAPIView, CategoryRetrieveUpdateDestroyAPIView,
+    TagListCreateAPIView, TagRetrieveUpdateDestroyAPIView,
+    CommentListCreateAPIView, CommentRetrieveUpdateDestroyAPIView,
+    MediaFileListCreateAPIView, MediaFileRetrieveUpdateDestroyAPIView
+)
 
-router = DefaultRouter()
-router.register(r'news', NewsViewSet)
-router.register(r'categories', CategoryViewSet)
-router.register(r'tags', TagViewSet)
-router.register(r'comments', CommentViewSet)
-router.register(r'mediafiles', MediaFileViewSet)
-
-urlpatterns = router.urls
+urlpatterns = [
+    # News
+    path('news/', NewsListCreateAPIView.as_view(), name='news-list-create'),
+    path('news/<int:pk>/', NewsRetrieveUpdateDestroyAPIView.as_view(), name='news-detail'),
+    # Category
+    path('categories/', CategoryListCreateAPIView.as_view(), name='category-list-create'),
+    path('categories/<int:pk>/', CategoryRetrieveUpdateDestroyAPIView.as_view(), name='category-detail'),
+    # Tag
+    path('tags/', TagListCreateAPIView.as_view(), name='tag-list-create'),
+    path('tags/<int:pk>/', TagRetrieveUpdateDestroyAPIView.as_view(), name='tag-detail'),
+    # Comment
+    path('comments/', CommentListCreateAPIView.as_view(), name='comment-list-create'),
+    path('comments/<int:pk>/', CommentRetrieveUpdateDestroyAPIView.as_view(), name='comment-detail'),
+    # MediaFile
+    path('mediafiles/', MediaFileListCreateAPIView.as_view(), name='mediafile-list-create'),
+    path('mediafiles/<int:pk>/', MediaFileRetrieveUpdateDestroyAPIView.as_view(), name='mediafile-detail'),
+]

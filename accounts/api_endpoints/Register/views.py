@@ -62,7 +62,7 @@ class RegisterUserAPIView(APIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        user = User.objects._create_user(
+        user = User.objects.create_user(
             email=email, password=password, is_confirmed=False
         )
         token = generate_email_confirm_token(user)

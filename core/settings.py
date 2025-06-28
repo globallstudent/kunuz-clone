@@ -15,6 +15,7 @@ import os
 from dotenv import load_dotenv
 from datetime import timedelta
 from django.utils.translation import gettext_lazy as _
+from celery.schedules import crontab
 
 load_dotenv()
 
@@ -340,6 +341,13 @@ CELERY_TIMEZONE = TIME_ZONE
 
 # Celery logging
 CELERYD_HIJACK_ROOT_LOGGER = False
+
+CELERY_BEAT_SCHEDULE = {
+    'publish-scheduled-news-every-minute': {
+        'task': 'news.tasks.publish_scheduled_news',
+        'schedule': crontab(),  # every minute
+    },
+}
 
 # TRANSLATABLE_MODEL_MODULES = [
 #     'news.models',

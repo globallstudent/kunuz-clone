@@ -203,13 +203,13 @@ TOKEN_EXPIRY_SECONDS = 3600  # 1 hour
 # JAZZMIN settings
 
 JAZZMIN_SETTINGS = {
-    "site_title": "VooCommerce Admin",
-    "site_header": "VooCommerce",
+    "site_title": "Kunuz Admin",
+    "site_header": "Kunuz",
     "site_logo": "apple.jpg",
     "login_logo": "apple.jpg",
     "site_logo_classes": "img-circle",
     "site_icon": "apple.jpg",
-    "welcome_sign": "Welcome to the VooCommerce Admin",
+    "welcome_sign": "Welcome to the Kunuz Admin",
     "copyright": "UIC Academy",
     "search_model": ["auth.User", "auth.Group"],
     "user_avatar": "avatar",

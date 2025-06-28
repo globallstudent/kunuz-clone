@@ -1,11 +1,9 @@
 from django.urls import path
-from .views import (
-    NewsListCreateAPIView, NewsRetrieveUpdateDestroyAPIView,
-    CategoryListCreateAPIView, CategoryRetrieveUpdateDestroyAPIView,
-    TagListCreateAPIView, TagRetrieveUpdateDestroyAPIView,
-    CommentListCreateAPIView, CommentRetrieveUpdateDestroyAPIView,
-    MediaFileListCreateAPIView, MediaFileRetrieveUpdateDestroyAPIView
-)
+from news.api_endpoints.news.views import NewsListCreateAPIView, NewsRetrieveUpdateDestroyAPIView
+from news.api_endpoints.category.views import CategoryListCreateAPIView, CategoryRetrieveUpdateDestroyAPIView
+from news.api_endpoints.tag.views import TagListCreateAPIView, TagRetrieveUpdateDestroyAPIView
+from news.api_endpoints.comment.views import CommentListCreateAPIView, CommentRetrieveUpdateDestroyAPIView
+from news.api_endpoints.mediafile.views import MediaFileListCreateAPIView, MediaFileRetrieveUpdateDestroyAPIView
 
 urlpatterns = [
     # News

@@ -34,6 +34,7 @@ class News(BaseModel):
 
     is_active = models.BooleanField(default=True)
     view_count = models.PositiveIntegerField(default=0)
+    publish_at = models.DateTimeField(null=True, blank=True, help_text="Schedule news to be published at this time.")
 
     liked_by = models.ManyToManyField(
         'accounts.User',

@@ -56,14 +56,11 @@ LOCAL_APPS = [
 
 
 EXTERNAL_APPS = [
-    "rest_framework",   
+    "rest_framework",
     "rest_framework_simplejwt",
     "drf_yasg",
     "jazzmin",
-    "crispy_forms",
-    "crispy_bootstrap4",
     "rosetta",
-    "django_celery_beat",
 ]
 
 INSTALLED_APPS = LOCAL_APPS + EXTERNAL_APPS + DJANGO_APPS
@@ -337,3 +334,9 @@ LOCALE_PATHS = [BASE_DIR / "locale"]
 CELERY_BROKER_URL = "redis://localhost:6379/0"
 CELERY_RESULT_BACKEND = "redis://localhost:6379/1"
 CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers.DatabaseScheduler"
+
+# TRANSLATABLE_MODEL_MODULES = [
+#     'news.models',
+#     'common.models',
+#     'accounts.models',
+# ]

@@ -3,6 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth import get_user_model
+from rest_framework import permissions
 
 from accounts.tokens import (
     generate_email_confirm_token,
@@ -20,7 +21,7 @@ User = get_user_model()
 
 
 class RegisterUserAPIView(APIView):
-    permission_classes = []
+    permission_classes = [permissions.AllowAny]
 
     @swagger_auto_schema(request_body=RegisterInputSerializer)
     def post(self, request):
@@ -37,19 +38,14 @@ class RegisterUserAPIView(APIView):
         if existing:
             if not existing.is_confirmed:
                 token = generate_email_confirm_token(existing)
-                new_pass = generate_temporary_password()
-                existing.set_password(new_pass)
-                existing.save()
-
+                # Do not set a temporary password, keep the original
                 send_email(
                     subject="Reset your password",
                     intro_text="Click the link below to reset your password.",
                     email=email,
                     token=token,
-                    template="email/reset_password_email.html",
-                    password=new_pass,
+                    template=None,
                 )
-
                 return Response(
                     {
                         "detail": "User already exists but not confirmed yet. Confirmation email sent."
@@ -72,7 +68,7 @@ class RegisterUserAPIView(APIView):
             intro_text="Click the link below to reset your password.",
             email=email,
             token=token,
-            template="email/reset_password_email.html",
+            template=None,
         )
 
         return Response(
@@ -82,7 +78,7 @@ class RegisterUserAPIView(APIView):
 
 
 class RegisterConfirmAPIView(APIView):
-    permission_classes = []
+    permission_classes = [permissions.AllowAny]
 
     @swagger_auto_schema(request_body=ConfirmTokenSerializer)
     def post(self, request):

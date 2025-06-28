@@ -3,11 +3,20 @@ from django.contrib.auth import authenticate, login
 from django.http import JsonResponse
 from rest_framework.views import APIView
 from rest_framework import status
+from rest_framework import serializers
+from rest_framework import permissions
+from drf_yasg.utils import swagger_auto_schema
+
+
+class SessionLoginSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    password = serializers.CharField(write_only=True)
 
 
 class SessionLoginAPIView(APIView):
-    permission_classes = []
+    permission_classes = [permissions.AllowAny]
 
+    @swagger_auto_schema(request_body=SessionLoginSerializer)
     def post(self, request):
         email = request.data.get("email")
         password = request.data.get("password")

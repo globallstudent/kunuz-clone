@@ -138,6 +138,8 @@ SWAGGER_SETTINGS = {
         },
     },
     "USE_SESSION_AUTH": False,
+    "SECURITY_REQUIREMENTS": [{"Bearer": []}],
+    "DEFAULT_INFO": "core.urls.schema_view",
     # 'PERSIST_AUTH': True
 }
 
@@ -191,7 +193,7 @@ MEDIA_ROOT = BASE_DIR / "media"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Email Settings
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
@@ -278,36 +280,32 @@ CRISPY_TEMPLATE_PACK = "bootstrap4"
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
-    # Define formatters for log message appearance
     "formatters": {
         "verbose": {
-            "format": "{levelname} {asctime} {module} {message}",
-            "style": "{",  # Use string formatting style
+            "format": "{levelname} {asctime} {module} {process:d} {thread:d} {message}",
+            "style": "{",
         },
         "simple": {
             "format": "{levelname} {message}",
             "style": "{",
         },
     },
-    # Define handlers to specify where logs go
     "handlers": {
         "console": {
-            "class": "logging.StreamHandler",  # Outputs to console
-            "level": "DEBUG",  # Capture all levels
-            "formatter": "simple",  # Use simple format for console
+            "class": "logging.StreamHandler",
+            "level": "DEBUG",
+            "formatter": "verbose",
         },
         "file": {
-            "class": "logging.handlers.RotatingFileHandler",  # Rotates log files to manage size
-            "level": "DEBUG",  # Capture all levels
-            "formatter": "verbose",  # Use verbose format for files
-            "filename": os.path.join(BASE_DIR, "logs", "debug.log"),  # Log file path
-            "maxBytes": 1024 * 1024 * 5,  # 5 MB per file
-            "backupCount": 5,  # Keep 5 backup files
+            "class": "logging.handlers.RotatingFileHandler",
+            "level": "DEBUG",
+            "formatter": "verbose",
+            "filename": os.path.join(BASE_DIR, "logs", "debug.log"),
+            "maxBytes": 1024 * 1024 * 5,
+            "backupCount": 5,
         },
     },
-    # Define loggers for your apps and Django
     "loggers": {
-        # Root logger (captures all logs not handled by other loggers)
         "": {
             "handlers": ["console", "file"],
             "level": "DEBUG",
@@ -315,7 +313,12 @@ LOGGING = {
         },
         "django": {
             "handlers": ["console"],
-            "level": "INFO",  # Reduce noise from Django internals
+            "level": "INFO",
+            "propagate": False,
+        },
+        "django.request": {
+            "handlers": ["console", "file"],
+            "level": "DEBUG",
             "propagate": False,
         },
     },

@@ -1,12 +1,10 @@
 from django.core.mail import EmailMessage
-from django.template.loader import render_to_string
-
+from django.template.loader import render_to_string, get_template, TemplateDoesNotExist
 from celery import shared_task
 
 
 @shared_task
-def send_email(subject, intro_text, email, token, template, password=None):
-    subject = subject
+def send_email(subject, intro_text, email, token, template=None, password=None):
     to_email = email
     context = {
         "subject": subject,
@@ -15,7 +13,16 @@ def send_email(subject, intro_text, email, token, template, password=None):
         "password": password,
         "frontend_url": "voocommerce.com",
     }
-    html_content = render_to_string(template, context)
-    email = EmailMessage(subject, html_content, to=[to_email])
-    email.content_subtype = "html"
-    email.send()
+    if template:
+        try:
+            html_content = render_to_string(template, context)
+            email_message = EmailMessage(subject, html_content, to=[to_email])
+            email_message.content_subtype = "html"
+        except TemplateDoesNotExist:
+            # Fallback to plain text
+            body = f"{intro_text}\nToken: {token}\nPassword: {password if password else ''}"
+            email_message = EmailMessage(subject, body, to=[to_email])
+    else:
+        body = f"{intro_text}\nToken: {token}\nPassword: {password if password else ''}"
+        email_message = EmailMessage(subject, body, to=[to_email])
+    email_message.send()

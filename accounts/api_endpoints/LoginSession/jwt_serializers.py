@@ -5,6 +5,9 @@ from accounts.models import User
 class EmailTokenObtainPairSerializer(TokenObtainPairSerializer):
     username_field = User.USERNAME_FIELD
 
+    email = serializers.EmailField()
+    password = serializers.CharField(write_only=True)
+
     def validate(self, attrs):
         # Accept email instead of username
         email = attrs.get('email')
@@ -17,7 +20,8 @@ class EmailTokenObtainPairSerializer(TokenObtainPairSerializer):
             raise serializers.ValidationError('Incorrect password.')
         if not user.is_confirmed:
             raise serializers.ValidationError('Email not confirmed.')
-        data = super().validate({'username': email, 'password': password})
+        # Pass attrs directly to parent
+        data = super().validate(attrs)
         return data
 
     @classmethod

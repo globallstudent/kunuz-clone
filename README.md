@@ -64,5 +64,5 @@ A minimal Django backend for a news portal, featuring CRUD APIs, JWT authenticat
 ---
 
 **Note:**
-- News modeltranslation is not available due to Django 5.x incompatibility.
+- News modeltranslation is not available
 - For production, configure proper email backend and secure settings.
